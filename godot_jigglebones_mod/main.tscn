@@ -1,0 +1,93 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://models/suzanne.dae" type="PackedScene" id=1]
+[ext_resource path="res://addons/jigglebones/jigglebone.gd" type="Script" id=2]
+[ext_resource path="res://addons/jigglebones/icon.svg" type="Texture" id=3]
+[ext_resource path="res://tile_tex.png" type="Texture" id=4]
+
+[sub_resource type="ProceduralSky" id=1]
+radiance_size = 4
+sky_top_color = Color( 0.0470588, 0.454902, 0.976471, 1 )
+sky_horizon_color = Color( 0.556863, 0.823529, 0.909804, 1 )
+sky_curve = 0.25
+ground_bottom_color = Color( 0.101961, 0.145098, 0.188235, 1 )
+ground_horizon_color = Color( 0.482353, 0.788235, 0.952941, 1 )
+ground_curve = 0.0565686
+sun_energy = 16.0
+
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
+background_color = Color( 0.340912, 0.62264, 0.746094, 1 )
+ambient_light_color = Color( 1, 1, 1, 1 )
+fog_height_min = 0.0
+fog_height_max = 100.0
+ssao_quality = 0
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.613281, 0.613281, 0.613281, 1 )
+albedo_texture = ExtResource( 4 )
+roughness = 0.0
+uv1_scale = Vector3( 0.1, 0.1, 0.1 )
+uv1_triplanar = true
+
+[sub_resource type="PlaneMesh" id=4]
+material = SubResource( 3 )
+size = Vector2( 1000, 1000 )
+
+[node name="main" type="WorldEnvironment"]
+environment = SubResource( 2 )
+
+[node name="Scene Root" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="Armature" parent="Scene Root" index="0"]
+transform = Transform( 0.92917, -0.0666382, 0.363597, -0.0766541, 0.927501, 0.365876, -0.361618, -0.367832, 0.856698, 0.177412, 0.624141, -0.334771 )
+
+[node name="Skeleton" parent="Scene Root/Armature" index="0"]
+transform = Transform( 0.94595, 0.093696, -0.310483, -0.110978, 0.99308, -0.0384318, 0.304733, 0.0708112, 0.949802, 0, 0, 0 )
+
+[node name="earL" type="Spatial" parent="Scene Root/Armature/Skeleton" index="1"]
+transform = Transform( 0.296327, -0.210324, -0.931641, -0.0837605, 0.96597, -0.244716, 0.951406, 0.150551, 0.268626, 1.6874, 0.27318, -0.796935 )
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_icon": ExtResource( 3 )
+}
+bone_name = "Ear.L"
+stiffness = 0.1
+top_item = true
+
+[node name="earR" type="Spatial" parent="Scene Root/Armature/Skeleton" index="2"]
+transform = Transform( 0.296001, 0.210239, 0.931759, 0.083846, 0.965993, -0.244599, -0.951501, 0.150526, 0.268307, -1.6874, 0.273182, -0.796935 )
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_icon": ExtResource( 3 )
+}
+bone_name = "Ear.R"
+
+[node name="chin" type="Spatial" parent="Scene Root/Armature/Skeleton" index="3"]
+transform = Transform( 1, -1.86265e-08, 4.12622e-05, -4.12855e-05, -0.000975847, 1, 2.23517e-08, -0.999999, -0.000973016, -2.5332e-07, -1.54214, 0.318175 )
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_icon": ExtResource( 3 )
+}
+bone_name = "Chin"
+stiffness = 0.1
+
+[node name="AnimationPlayer" parent="Scene Root" index="1"]
+autoplay = "default"
+
+[node name="light" type="DirectionalLight" parent="."]
+transform = Transform( 0.573238, 0.661115, 0.48407, -0.674925, 0.0459793, 0.736452, 0.464623, -0.748874, 0.47256, 3.46112, 0, 0 )
+shadow_enabled = true
+directional_shadow_max_distance = 200.0
+
+[node name="floor" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25885, -2.17987, -1.51131 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="cam" type="Camera" parent="."]
+transform = Transform( 0.997219, -0.036321, 0.0976642, 0, 0.937366, 0.348603, -0.103659, -0.345799, 0.929826, 0.336978, 1.45275, 3.92528 )
+
+[editable path="Scene Root"]
